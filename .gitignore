@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pt
+*.pth
+*.ckpt
+.venv/
+.env
+runs/
+data/raw/
+data/cache/
+fits/
+external/*/data/
+external/*/runs/
+.DS_Store
+.idea/
+.vscode/

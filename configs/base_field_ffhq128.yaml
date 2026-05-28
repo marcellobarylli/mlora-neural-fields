@@ -1,0 +1,34 @@
+data:
+  root: ./data/ffhq128
+  image_size: 128
+  max_images: 1000
+
+base_field:
+  in_dim: 2
+  out_dim: 3
+  hidden_dim: 256
+  num_hidden_layers: 4
+  fourier_kind: gaussian
+  gaussian_mapping_size: 128
+  gaussian_scale: 10.0
+  activation: relu
+  output_activation: tanh
+  z_dim: 256
+  modulator_hidden: 256
+  modulator_layers: 2
+
+autodecoder:
+  num_steps: 100000
+  batch_instances: 16
+  batch_coords: 1024
+  lr_trunk: 1.0e-4
+  lr_latents: 1.0e-3
+  weight_decay: 0.0
+  latent_l2: 1.0e-3
+  grad_clip: 1.0
+  log_every: 100
+  eval_every: 1000
+  ckpt_every: 5000
+  eval_grid_size: 64
+
+ckpt_dir: ./runs/base_field

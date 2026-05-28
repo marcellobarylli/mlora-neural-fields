@@ -1,0 +1,44 @@
+data:
+  root: ./data/ffhq128
+  image_size: 128
+  max_images: 1000
+
+base_field_ckpt: ./runs/base_field/base_final.pt   # required for lora / mlora variants
+
+# Standalone MLP baseline.
+standalone:
+  in_dim: 2
+  out_dim: 3
+  hidden_dim: 128
+  fourier_kind: gaussian
+  gaussian_mapping_size: 105            # output dim 210 -> ~27k params, matches Table 1
+  gaussian_scale: 10.0
+  activation: relu
+
+# LoRA / mLoRA shared adapter settings.
+adapter:
+  rank: 8
+  alpha_skip: 1.0      # mLoRA: 1.0 -> stable; 0.0 -> paper-literal
+  kappa: 6.0
+  asym_mask_seed: 1234
+
+asym_mask:
+  kappa_mlp: 6.0
+  seed: 1234
+
+fit:
+  num_steps: 5000
+  lr: 1.0e-2
+  optimizer: adam
+  batch_coords: 8192
+  loss: mse
+  scheduler: plateau
+  plateau_factor: 0.8
+  plateau_patience: 25
+  min_lr: 1.0e-5
+  early_stop_patience: 500
+  full_grid_eval_every: 100
+  log_every: 0
+
+# Output: directory tree per representation.
+out_dir: ./runs/fits
