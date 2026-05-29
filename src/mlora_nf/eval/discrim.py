@@ -73,8 +73,10 @@ def evaluate_discriminative(
         knn.fit(X_train_n, y_train)
         knn_accs.append(float(knn.score(X_test_n, y_test)))
 
+        # ``multi_class`` was deprecated in scikit-learn 1.5 and removed in 1.7;
+        # "auto"/multinomial is the default for lbfgs anyway, so we just omit it.
         logreg = LogisticRegression(
-            max_iter=2000, multi_class="auto", solver="lbfgs", random_state=rs,
+            max_iter=2000, solver="lbfgs", random_state=rs,
         )
         logreg.fit(X_train, y_train)
         logreg_accs.append(float(logreg.score(X_test, y_test)))
