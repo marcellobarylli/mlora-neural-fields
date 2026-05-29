@@ -9,8 +9,11 @@ runs/
 data/raw/
 data/cache/
 fits/
+external/HyperDiffusion/
 external/*/data/
 external/*/runs/
+*.egg-info/
+.pytest_cache/
 .DS_Store
 .idea/
 .vscode/
