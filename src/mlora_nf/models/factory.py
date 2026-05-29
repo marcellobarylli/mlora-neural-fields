@@ -61,9 +61,14 @@ def build_representation(
         # Stash mask + kappa so re-init helpers can find them.
         model._asym_mask_fc1 = m
         model._asym_mask_kappa = kappa_mlp
+        # Register the trainable mask as a buffer so it follows ``model.to(device)``;
+        # reference it dynamically in the hook (a closure over a fixed-device tensor
+        # would break once the model is moved to another device).
+        model.register_buffer(
+            "_asym_mask_fc1_trainable", m.trainable.to(torch.float32), persistent=False
+        )
         # Gradient hook so frozen entries don't update.
-        trainable = m.trainable.to(torch.float32).to(model.fc1.weight.device)
-        model.fc1.weight.register_hook(lambda g, t=trainable: g * t)
+        model.fc1.weight.register_hook(lambda g: g * model._asym_mask_fc1_trainable)
         return model
 
     if trunk_state is None:
